@@ -14,9 +14,9 @@ Frontend para [Express Personas](https://github.com/akobashikawa/express-persona
 
 - Saludar a alguien
 
-### [Personas](https://github.com/akobashikawa/vue-personas/tree/personas-notas-personales)
+### [Personas](https://github.com/akobashikawa/vue-personas/tree/personas)
 
-- Lista de personas. Base de datos: Array en el service
+- Lista de personas
 
 ### [Personas Notas](https://github.com/akobashikawa/vue-personas/tree/personas-notas)
 
