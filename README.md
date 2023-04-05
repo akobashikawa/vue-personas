@@ -26,6 +26,6 @@ Frontend para [Express Personas](https://github.com/akobashikawa/express-persona
 
 - Lista de notas personales
 
-### [Sistema de Notas Personales H2](https://github.com/akobashikawa/vue-personas/tree/sistema-notas-personales-h2)
+### [Sistema de Notas Personales](https://github.com/akobashikawa/vue-personas/tree/sistema-notas-personales)
 
 - Sistema de notas personales
