@@ -19,7 +19,7 @@
   <div id="app" class="container" v-cloak>
     <h1>Hola Mundo</h1>
 
-    <button class="btn btn-primary mt-2" @click="hola">Hola</button>
+    <button class="btn btn-primary mt-2" @click="holamundo">Hola</button>
 
     <h2 class="text-bg-success p-3 my-2" v-if="saludo">{{ saludo }}</h2>
     <p class="text-bg-danger p-3 my-2" v-if="error">{{ error }}</p>
@@ -45,8 +45,8 @@
       },
 
       methods: {
-        hola() {
-          const url = BACKEND_BASE_URL + `/hola`;
+        holamundo() {
+          const url = BACKEND_BASE_URL + `/holamundo`;
           axios.get(url)
             .then(response => {
               this.saludo = response.data.saludo;
