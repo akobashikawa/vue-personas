@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Notas</title>
+    <title>Notas Personales</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
@@ -19,43 +19,57 @@
 
 <body>
     <div id="app" class="container" v-cloak>
-        <h1>Notas Admin</h1>
+        <h1>Notas Personales</h1>
 
-        <!-- <input type="text" class="form-control" placeholder="Texto" v-model="texto">
+        <div class="persona">
+            <h3>Persona</h3>
+            <a href="/personas.html" target="_blank">Ver Personas</a>
 
-        <p>
-            <button class="btn btn-primary mt-2" @click="agregar">Agregar</button>
-        </p>
+            <select class="form-select" v-model="persona_id" @change="listar">
+                <option value="" selected>Seleccionar una persona:</option>
+                <option v-for="persona of personas" :value="persona.id">{{ persona.nombre }}</option>
+            </select>
 
-        <p class="text-bg-danger p-3 my-2" v-if="error">{{ error }}</p>
-        <p class="text-bg-success p-3 my-2" v-if="nuevaNota">Nota agregada: {{ nuevaNota.texto }}</p> -->
+        </div>
 
-        <p>
-            <button class="btn btn-primary mt-2" @click="listar">Listar</button>
-        </p>
+        <div class="notas mt-4" v-if="persona_id">
+            <h3>Notas de {{ personaSelected.nombre }}</h3>
 
-        <p>Notas: {{ notas.length || 0 }}</p>
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>texto</th>
-                    <th>persona</th>
-                    <th>acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="nota of notas">
-                    <td>{{ nota.id }}</td>
-                    <td>{{ nota.texto }}</td>
-                    <td>{{ nota.persona.nombre }}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" @click="eliminar(nota)">Eliminar</button>
-                        <button class="btn btn-primary btn-sm mx-1" @click="abrirModal(nota)">Editar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <input type="text" class="form-control" placeholder="Texto" v-model="texto">
+
+            <p>
+                <button class="btn btn-primary mt-2" @click="agregar">Agregar</button>
+            </p>
+
+            <p class="text-bg-danger p-3 my-2" v-if="error">{{ error }}</p>
+            <p class="text-bg-success p-3 my-2" v-if="nuevaNota">Nota agregada: {{ nuevaNota.texto }}</p>
+
+            <p>
+                <button class="btn btn-primary mt-2" @click="listar">Listar</button>
+            </p>
+
+            <p>Notas: {{ notas.length || 0 }}</p>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>texto</th>
+                        <th>acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="nota of notas">
+                        <td>{{ nota.id }}</td>
+                        <td>{{ nota.texto }}</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" @click="eliminar(nota)">Eliminar</button>
+                            <button class="btn btn-primary btn-sm mx-1" @click="abrirModal(nota)">Editar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
 
         <div class="modal fade" id="myModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -68,10 +82,6 @@
                     <div class="modal-body">
                         <p>id: {{ notaEditada.id }}</p>
                         <input type="text" class="form-control" placeholder="Nombre" v-model="notaEditada.texto">
-                        <select class="form-select" v-model="notaEditada.persona.id">
-                            <option value="" selected>Seleccionar una persona:</option>
-                            <option v-for="persona of personas" :value="persona.id">{{ persona.nombre }}</option>
-                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -106,23 +116,29 @@
                     notaEliminada: null,
                     notaEditada: {
                         id: 0,
-                        texto: '',
-                        persona: {
-                            id: null,
-                            nombre: '',
-                        },
+                        texto: ''
                     },
                     notas: [],
                     personas: [],
+                    persona_id: '',
+
                     error: '',
                     myModal: null,
                 };
             },
 
+            computed: {
+                personaSelected() {
+                    return this.personas.find(item => item.id == this.persona_id);
+                }
+            },
+
             methods: {
                 async agregar() {
-                    const url = BACKEND_BASE_URL + '/notas';
-                    const body = { texto: this.texto };
+                    const url = BACKEND_BASE_URL + `/personas/${this.persona_id}/notas`;
+                    const body = { 
+                        texto: this.texto
+                    };
 
                     try {
                         this.error = '';
@@ -162,7 +178,7 @@
                 },
 
                 async listar() {
-                    const url = BACKEND_BASE_URL + '/notas';
+                    const url = BACKEND_BASE_URL + `/personas/${this.persona_id}/notas`;
 
                     try {
                         this.error = '';
@@ -174,7 +190,7 @@
                 },
 
                 async listarPersonas() {
-                    const url =  BACKEND_BASE_URL + '/personas';
+                    const url = BACKEND_BASE_URL + '/personas';
 
                     try {
                         this.error = '';
@@ -203,6 +219,7 @@
                     this.traer(nota.id);
                     this.myModal.show();
                 },
+                
             },
 
 
@@ -210,9 +227,9 @@
                 this.myModal = new bootstrap.Modal('#myModal', {
                 });
 
-                this.listar();
                 this.listarPersonas();
             },
+
         }).mount('#app');  
     </script>
 
