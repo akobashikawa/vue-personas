@@ -46,7 +46,7 @@
 
       methods: {
         hola() {
-          const url = BACKEND_BASE_URL + `/hola`;
+          const url = BACKEND_BASE_URL + `/holamundo`;
           axios.get(url)
             .then(response => {
               this.saludo = response.data.saludo;
